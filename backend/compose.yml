@@ -1,0 +1,17 @@
+services: 
+  db:
+    container_name: todo-db
+    image: mysql:9.3
+    volumes:
+      - todo-db-data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: todo_list
+      MYSQL_USER: todo
+      MYSQL_PASSWORD: todo_password
+
+volumes:
+  todo-db-data:

@@ -20,3 +20,25 @@ Return example
     }
 ]
 ```
+
+### `POST /task`
+**Description** add new task on server.
+
+`POST` body example
+```js
+{
+    "title": "example",
+    "description": "this is an example to testing",
+    "done": "false"
+}
+```
+
+return example
+```js
+{
+    "id": 3,
+    "title": "example",
+    "description": "this is an example to testing",
+    "done": false
+}
+```

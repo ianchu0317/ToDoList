@@ -24,6 +24,15 @@ def generate_task_id():
     return (count + 1)
 
 
+def get_task_data(task: Task) -> dict:
+    return {
+        "id": task.id,
+        "title": task.title,
+        "description": task.description,
+        "done": task.done   
+    }
+    
+
 def get_tasks():
     cnx = get_db_connection()
     cursor = cnx.cursor()
@@ -42,12 +51,7 @@ def get_tasks():
 
 def add_task(task: Task):
     task.id = generate_task_id()
-    task_data = {
-        "id": task.id,
-        "title": task.title,
-        "description": task.description,
-        "done": task.done        
-    }
+    task_data = get_task_data(task)
     
     cnx = get_db_connection()
     cursor = cnx.cursor()
@@ -62,3 +66,20 @@ def add_task(task: Task):
 
     return task
 
+
+def update_task(task: Task):
+    task_data = get_task_data(task)
+    
+    cnx = get_db_connection()
+    cursor = cnx.cursor()
+    
+    cmd = (" UPDATE tasks "
+           " SET title = %(title)s, description = %(description)s, done = %(done)s "
+           " WHERE id = %(id)s ; ")
+    cursor.execute(cmd, task_data)
+        
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+    
+    return task

@@ -12,3 +12,8 @@ def read_tasks():
 @app.post("/task", response_model=Task)
 def create_task(task: Task):
     return controllers.add_task(task)
+
+
+@app.put("/task", response_model=Task)
+def update_task(task: Task):
+    return controllers.update_task(task)

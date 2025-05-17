@@ -56,11 +56,12 @@ def add_task(task: Task):
     cnx = get_db_connection()
     cursor = cnx.cursor()
     
-    cursor.execute("INSERT INTO tasks "
-                   "(id, title, description, done)"
-                   "VALUES (%(id)s, %(title)s, %(description)s, %(done)s);",
-                   task_data)
+    cmd = ("INSERT INTO tasks "
+           "(id, title, description, done) "
+           "VALUES (%(id)s, %(title)s, %(description)s, %(done)s);")
+    cursor.execute(cmd, task_data)
     cnx.commit()
+    
     cursor.close()
     cnx.close()
 
@@ -73,12 +74,12 @@ def update_task(task: Task):
     cnx = get_db_connection()
     cursor = cnx.cursor()
     
-    cmd = (" UPDATE tasks "
-           " SET title = %(title)s, description = %(description)s, done = %(done)s "
-           " WHERE id = %(id)s ; ")
-    cursor.execute(cmd, task_data)
-        
+    cmd = ("UPDATE tasks "
+           "SET title = %(title)s, description = %(description)s, done = %(done)s "
+           "WHERE id = %(id)s ;")
+    cursor.execute(cmd, task_data)        
     cnx.commit()
+    
     cursor.close()
     cnx.close()
     

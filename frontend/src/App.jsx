@@ -132,26 +132,32 @@ export default function App() {
 
       <ul className="space-y-2">
         {tasks.map(task => (
-          <li key={task.id} className="border p-3 rounded shadow">
+          <li key={task.id} className="border p-3 rounded shadow hover:shadow-md transition">
             <div className="flex justify-between items-start">
-              <div>
-                <h2 className="text-lg font-semibold">{task.title}</h2>
-                <p className="text-sm text-gray-500">{task.description}</p>
-              </div>
-              <div className="space-x-2 flex items-center">
+              {/* IZQUIERDA: Checkbox + info */}
+              <div className="flex items-start gap-3">
                 <input
                   type="checkbox"
                   checked={task.done === "true" || task.done === true}
                   onChange={() => handleToggleDone(task)}
+                  className="mt-1 cursor-pointer"
                 />
+                <div>
+                  <h2 className="text-lg font-semibold">{task.title}</h2>
+                  <p className="text-sm text-gray-500">{task.description}</p>
+                </div>
+              </div>
+
+              {/* DERECHA: Botones */}
+              <div className="space-x-2 flex items-center">
                 <button
-                  className="text-sm text-blue-600"
+                  className="text-sm text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
                   onClick={() => handleEdit(task)}
                 >
                   Edit
                 </button>
                 <button
-                  className="text-sm text-red-600"
+                  className="text-sm text-red-600 hover:text-red-800 transition-colors cursor-pointer"
                   onClick={() => handleDelete(task.id)}
                 >
                   Delete

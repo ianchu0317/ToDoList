@@ -22,3 +22,8 @@ def update_task(task: Task):
             detail="Invalid task id"
         )
     return controllers.update_task(task)
+
+
+@app.delete("/tasks/{task_id}", status_code=204)
+def delete_task(task_id: int):
+    return controllers.delete_task(task_id)

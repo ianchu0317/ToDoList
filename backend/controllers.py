@@ -1,4 +1,5 @@
 import mysql.connector
+from fastapi import HTTPException
 from schemas import Task
 
 
@@ -31,6 +32,14 @@ def get_task_data(task: Task) -> dict:
         "description": task.description,
         "done": task.done   
     }
+
+
+def check_task_id(task_id: int):
+    if task_id <= 0 or task_id >= generate_task_id():
+        raise HTTPException(
+            status_code=404,
+            detail="Invalid task id"
+        )    
     
 
 def get_tasks():
@@ -84,3 +93,17 @@ def update_task(task: Task) -> Task:
     cnx.close()
     
     return task
+
+
+def delete_task(task_id):
+    check_task_id(task_id)
+    cnx = get_db_connection()
+    cursor = cnx.cursor()
+    
+    cmd = ("DELETE FROM tasks "
+           "WHERE id=%(id)s;")
+    cursor.execute(cmd, {"id": task_id})
+    cnx.commit()
+    
+    cursor.close()
+    cnx.close()

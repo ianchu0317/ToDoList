@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from schemas import Task
 
 
-# DB CONTROLLERS
+# AUXILIARY FUNCTIONS
 def get_db_connection():
     """Get connection with database"""
     return mysql.connector.connect(
@@ -14,7 +14,6 @@ def get_db_connection():
     )
 
 
-# API CONTROLLERS
 def generate_task_id():
     cnx = get_db_connection()
     cursor = cnx.cursor()
@@ -40,7 +39,9 @@ def raise_invalid_task():
         detail="Invalid task id"
     )
     
+    
 
+# ENDPOINTS FUNCTIONS
 def get_tasks():
     cnx = get_db_connection()
     cursor = cnx.cursor()
@@ -64,17 +65,16 @@ def create_task(task: Task):
     cnx = get_db_connection()
     cursor = cnx.cursor()
     
-    cmd = ("INSERT INTO tasks "
-           "(id, title, description, done) "
-           "VALUES (%(id)s, %(title)s, %(description)s, %(done)s);")
-    cursor.execute(cmd, task_data)
+    cursor.execute(
+        "INSERT INTO tasks (id, title, description, done) "
+        "VALUES (%(id)s, %(title)s, %(description)s, %(done)s);", 
+        task_data
+        )
     cnx.commit()
-    
     cursor.close()
     cnx.close()
 
     return {"detail": "Task created", "task": task}
-            
 
 
 def update_task(task: Task) -> Task:   
@@ -83,24 +83,23 @@ def update_task(task: Task) -> Task:
     cnx = get_db_connection()
     cursor = cnx.cursor()
     
-    cmd = ("UPDATE tasks "
-           "SET title = %(title)s, description = %(description)s, done = %(done)s "
-           "WHERE id = %(id)s ;")
-    cursor.execute(cmd, task_data)        
+    cursor.execute(
+        "UPDATE tasks "
+        "SET title = %(title)s, description = %(description)s, done = %(done)s "
+        "WHERE id = %(id)s ;", 
+        task_data
+        )        
     cnx.commit()
     
     if cursor.rowcount == 0:
         cursor.close()
         cnx.close()
         raise_invalid_task()
-
+    
     cursor.close()
     cnx.close()
     
-    return {
-        "detail": "Task updated", 
-        "task": task
-        }
+    return {"detail": "Task updated", "task": task}
 
 
 def delete_task(task_id):

@@ -68,7 +68,7 @@ def add_task(task: Task):
     return task
 
 
-def update_task(task: Task):
+def update_task(task: Task) -> Task:   
     task_data = get_task_data(task)
     
     cnx = get_db_connection()

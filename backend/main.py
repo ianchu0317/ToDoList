@@ -14,8 +14,9 @@ def create_task(task: Task):
     return controllers.add_task(task)
 
 
-@app.put("/task", response_model=Task)
-def update_task(task: Task):
+@app.put("/task/{task_id}}", status_code=200)
+def update_task(task_id: int, task: Task):
+    task.id = task_id
     return controllers.update_task(task)
 
 

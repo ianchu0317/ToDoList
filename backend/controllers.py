@@ -95,7 +95,11 @@ def update_task(task: Task) -> Task:
 
     cursor.close()
     cnx.close()
-    return task
+    
+    return {
+        "detail": "Task updated", 
+        "task": task
+        }
 
 
 def delete_task(task_id):

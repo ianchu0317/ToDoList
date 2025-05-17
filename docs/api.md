@@ -43,13 +43,12 @@ return example
 }
 ```
 
-### `PUT /task`
+### `PUT /tasks/{task_id}`
 **Description** update one existing task
 
-Request body example
+Request body example `PUT /tasks/{task_id}`
 ```js
 {
-    "id": 3,
     "title": "example",
     "description": "example to testing update",
     "done": false
@@ -59,10 +58,13 @@ Request body example
 success return 
 ```js
 {
-    "id": 3,
-    "title": "example",
-    "description": "example to testing update",
-    "done": false
+    "detail": "Task updated",
+    "task": {
+        "id": 3,
+        "title": "example",
+        "description": "example to testing update",
+        "done": false
+    }
 }
 ```
 
@@ -73,11 +75,11 @@ if requested id is not found, return 404
 }
 ```
 
-## `DELETE /tasks/{id}`
+## `DELETE /tasks/{task_id}`
 **description** delete specific task by id
 
 ```
-DELETE /task/{id}
+DELETE /task/{task_id}
 ```
 If success will return 204 code (none).
 

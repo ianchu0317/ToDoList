@@ -6,23 +6,21 @@ export default function App() {
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [newTask, setNewTask] = useState({ title: "", description: "" });
-  const [editTaskId, setEditTaskId] = useState(null);
-  const [editTaskData, setEditTaskData] = useState({ title: "", description: "" });
+  const [editingTask, setEditingTask] = useState(null);
   const apiUrl = "http://localhost:8000";
 
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const res = await axios.get(`${apiUrl}/tasks`);
-        setTasks(res.data);
-      } catch (err) {
-        console.error("Error al obtener tareas:", err);
-        setError("No se pudo conectar con la API");
-      }
-    };
-
     fetchTasks();
   }, []);
+
+  const fetchTasks = async () => {
+    try {
+      const res = await axios.get(`${apiUrl}/tasks`);
+      setTasks(res.data);
+    } catch (err) {
+      setError("No se pudo conectar con la API");
+    }
+  };
 
   const handleCreateTask = async () => {
     if (!newTask.title.trim()) return;
@@ -36,36 +34,56 @@ export default function App() {
       setNewTask({ title: "", description: "" });
       setShowForm(false);
     } catch (err) {
-      console.error("Error al crear tarea:", err);
       setError("No se pudo crear la tarea");
     }
   };
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${apiUrl}/task/${id}`);
+      await axios.delete(`${apiUrl}/tasks/${id}`);
       setTasks(prev => prev.filter(task => task.id !== id));
     } catch (err) {
-      console.error("Error al eliminar tarea:", err);
       setError("No se pudo eliminar la tarea");
     }
   };
 
-  const handleEdit = (task) => {
-    setEditTaskId(task.id);
-    setEditTaskData({ title: task.title, description: task.description });
+  const handleToggleDone = async (task) => {
+    try {
+      const updatedTask = {
+        ...task,
+        done: task.done === "true" || task.done === true ? false : true,
+      };
+      const res = await axios.put(`${apiUrl}/tasks/${task.id}`, updatedTask);
+      setTasks(prev =>
+        prev.map(t => (t.id === task.id ? res.data.task : t))
+      );
+    } catch (err) {
+      setError("No se pudo actualizar el estado de la tarea");
+    }
   };
 
-  const handleSaveEdit = async (id) => {
+  const handleEdit = (task) => {
+    setEditingTask(task);
+    setShowForm(true);
+    setNewTask({ title: task.title, description: task.description });
+  };
+
+  const handleUpdateTask = async () => {
     try {
-      const res = await axios.put(`${apiUrl}/task/${id}`, editTaskData);
+      const updatedTask = {
+        ...editingTask,
+        title: newTask.title,
+        description: newTask.description,
+      };
+      const res = await axios.put(`${apiUrl}/tasks/${editingTask.id}`, updatedTask);
       setTasks(prev =>
-        prev.map(task => (task.id === id ? res.data.task : task))
+        prev.map(t => (t.id === editingTask.id ? res.data.task : t))
       );
-      setEditTaskId(null);
+      setEditingTask(null);
+      setShowForm(false);
+      setNewTask({ title: "", description: "" });
     } catch (err) {
-      console.error("Error al editar tarea:", err);
-      setError("No se pudo editar la tarea");
+      setError("No se pudo actualizar la tarea");
     }
   };
 
@@ -78,7 +96,11 @@ export default function App() {
         </div>
       )}
       <button
-        onClick={() => setShowForm(!showForm)}
+        onClick={() => {
+          setShowForm(!showForm);
+          setEditingTask(null);
+          setNewTask({ title: "", description: "" });
+        }}
         className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
       >
         {showForm ? "Cancel" : "New Task"}
@@ -100,10 +122,10 @@ export default function App() {
             onChange={e => setNewTask({ ...newTask, description: e.target.value })}
           />
           <button
-            onClick={handleCreateTask}
+            onClick={editingTask ? handleUpdateTask : handleCreateTask}
             className="bg-green-500 text-white px-4 py-2 rounded"
           >
-            Add Task
+            {editingTask ? "Update Task" : "Add Task"}
           </button>
         </div>
       )}
@@ -111,59 +133,28 @@ export default function App() {
       <ul className="space-y-2">
         {tasks.map(task => (
           <li key={task.id} className="border p-3 rounded shadow">
-            {editTaskId === task.id ? (
-              <div>
+            <div className="flex justify-between items-center">
+              <span>{task.title}</span>
+              <div className="space-x-2 flex items-center">
                 <input
-                  type="text"
-                  className="block w-full mb-2 p-2 border rounded"
-                  value={editTaskData.title}
-                  onChange={e =>
-                    setEditTaskData({ ...editTaskData, title: e.target.value })
-                  }
-                />
-                <textarea
-                  className="block w-full mb-2 p-2 border rounded"
-                  value={editTaskData.description}
-                  onChange={e =>
-                    setEditTaskData({ ...editTaskData, description: e.target.value })
-                  }
+                  type="checkbox"
+                  checked={task.done === "true" || task.done === true}
+                  onChange={() => handleToggleDone(task)}
                 />
                 <button
-                  onClick={() => handleSaveEdit(task.id)}
-                  className="bg-green-500 text-white px-4 py-1 rounded mr-2"
+                  className="text-sm text-blue-600"
+                  onClick={() => handleEdit(task)}
                 >
-                  Save
+                  Edit
                 </button>
                 <button
-                  onClick={() => setEditTaskId(null)}
-                  className="bg-gray-300 px-4 py-1 rounded"
+                  className="text-sm text-red-600"
+                  onClick={() => handleDelete(task.id)}
                 >
-                  Cancel
+                  Delete
                 </button>
               </div>
-            ) : (
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="font-semibold">{task.title}</p>
-                  <p className="text-sm text-gray-600">{task.description}</p>
-                </div>
-                <div className="space-x-2">
-                  <input type="checkbox" defaultChecked={task.done === "true" || task.done === true} />
-                  <button
-                    onClick={() => handleEdit(task)}
-                    className="text-sm text-blue-600"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(task.id)}
-                    className="text-sm text-red-600"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            )}
+            </div>
           </li>
         ))}
       </ul>

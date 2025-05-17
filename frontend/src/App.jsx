@@ -133,8 +133,11 @@ export default function App() {
       <ul className="space-y-2">
         {tasks.map(task => (
           <li key={task.id} className="border p-3 rounded shadow">
-            <div className="flex justify-between items-center">
-              <span>{task.title}</span>
+            <div className="flex justify-between items-start">
+              <div>
+                <h2 className="text-lg font-semibold">{task.title}</h2>
+                <p className="text-sm text-gray-500">{task.description}</p>
+              </div>
               <div className="space-x-2 flex items-center">
                 <input
                   type="checkbox"

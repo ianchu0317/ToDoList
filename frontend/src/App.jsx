@@ -98,10 +98,10 @@ export default function App() {
       <button
         onClick={() => {
           setShowForm(true);
-          setEditingTask(null); // Por si estaba editando
-          setNewTask({ title: "", description: "" }); // Limpia el formulario
+          setEditingTask(null);
+          setNewTask({ title: "", description: "" });
         }}
-        className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+        className="bg-blue-500 text-white px-4 py-2 rounded mb-4 transition-all duration-200 hover:cursor-pointer hover:bg-blue-600 hover:scale-105"
       >
         New Task
       </button>

@@ -42,3 +42,33 @@ return example
     "done": false
 }
 ```
+
+## `PUT /task`
+**Description** update one existing task
+
+Request body example
+```js
+{
+    "id": 3,
+    "title": "example",
+    "description": "example to testing update",
+    "done": false
+}
+```
+
+success return 
+```js
+{
+    "id": 3,
+    "title": "example",
+    "description": "example to testing update",
+    "done": false
+}
+```
+
+if requested id is not found, return 404
+```js
+{
+    "detail": "Invalid task id"
+}
+```

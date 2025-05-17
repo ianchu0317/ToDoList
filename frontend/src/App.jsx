@@ -18,7 +18,7 @@ export default function App() {
       const res = await axios.get(`${apiUrl}/tasks`);
       setTasks(res.data);
     } catch (err) {
-      setError("No se pudo conectar con la API");
+      setError("Unable to connect to the API");
     }
   };
 
@@ -34,7 +34,7 @@ export default function App() {
       setNewTask({ title: "", description: "" });
       setShowForm(false);
     } catch (err) {
-      setError("No se pudo crear la tarea");
+      setError("Unable to create task");
     }
   };
 
@@ -43,7 +43,7 @@ export default function App() {
       await axios.delete(`${apiUrl}/tasks/${id}`);
       setTasks(prev => prev.filter(task => task.id !== id));
     } catch (err) {
-      setError("No se pudo eliminar la tarea");
+      setError("Unable to delete task");
     }
   };
 
@@ -58,7 +58,7 @@ export default function App() {
         prev.map(t => (t.id === task.id ? res.data.task : t))
       );
     } catch (err) {
-      setError("No se pudo actualizar el estado de la tarea");
+      setError("Unable to update task status");
     }
   };
 
@@ -83,7 +83,7 @@ export default function App() {
       setShowForm(false);
       setNewTask({ title: "", description: "" });
     } catch (err) {
-      setError("No se pudo actualizar la tarea");
+      setError("Unable to update task");
     }
   };
 

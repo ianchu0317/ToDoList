@@ -14,6 +14,16 @@ def get_db_connection():
 
 
 # API CONTROLLERS
+def generate_task_id():
+    cnx = get_db_connection()
+    cursor = cnx.cursor()
+    cursor.execute("SELECT COUNT(*) FROM tasks")
+    (count, ) = cursor.fetchone()
+    cursor.close()
+    cnx.close()
+    return (count + 1)
+
+
 def get_tasks():
     cnx = get_db_connection()
     cursor = cnx.cursor()
@@ -29,4 +39,26 @@ def get_tasks():
     cnx.close()
     return tasks
 
-print(get_tasks())
+
+def add_task(task: Task):
+    task.id = generate_task_id()
+    task_data = {
+        "id": task.id,
+        "title": task.title,
+        "description": task.description,
+        "done": task.done        
+    }
+    
+    cnx = get_db_connection()
+    cursor = cnx.cursor()
+    
+    cursor.execute("INSERT INTO tasks "
+                   "(id, title, description, done)"
+                   "VALUES (%(id)s, %(title)s, %(description)s, %(done)s);",
+                   task_data)
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+
+    return task
+

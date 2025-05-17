@@ -9,15 +9,14 @@ def read_tasks():
     return controllers.get_tasks()
 
 
-@app.post("/task", response_model=Task, status_code=201)
+@app.post("/task", status_code=201)
 def create_task(task: Task):
     return controllers.create_task(task)
 
 
-@app.put("/task/{task_id}}", status_code=200)
+@app.put("/tasks/{task_id}", status_code=200)
 def update_task(task_id: int, task: Task):
-    task.id = task_id
-    return controllers.update_task(task)
+    return controllers.update_task(task_id, task)
 
 
 @app.delete("/tasks/{task_id}", status_code=204)

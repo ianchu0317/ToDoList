@@ -97,17 +97,17 @@ export default function App() {
       )}
       <button
         onClick={() => {
-          setShowForm(!showForm);
-          setEditingTask(null);
-          setNewTask({ title: "", description: "" });
+          setShowForm(true);
+          setEditingTask(null); // Por si estaba editando
+          setNewTask({ title: "", description: "" }); // Limpia el formulario
         }}
         className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
       >
-        {showForm ? "Cancel" : "New Task"}
+        New Task
       </button>
 
       {showForm && (
-        <div className="border p-4 mb-4 rounded shadow">
+        <div className="border p-4 mb-4 rounded shadow relative">
           <input
             type="text"
             placeholder="Title"
@@ -121,14 +121,27 @@ export default function App() {
             value={newTask.description}
             onChange={e => setNewTask({ ...newTask, description: e.target.value })}
           />
-          <button
-            onClick={editingTask ? handleUpdateTask : handleCreateTask}
-            className="bg-green-500 text-white px-4 py-2 rounded"
-          >
-            {editingTask ? "Update Task" : "Add Task"}
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={editingTask ? handleUpdateTask : handleCreateTask}
+              className="bg-green-500 text-white px-4 py-2 rounded"
+            >
+              {editingTask ? "Update Task" : "Add Task"}
+            </button>
+            <button
+              onClick={() => {
+                setShowForm(false);
+                setEditingTask(null);
+                setNewTask({ title: "", description: "" });
+              }}
+              className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       )}
+
 
       <ul className="space-y-2">
         {tasks.map(task => (

@@ -43,7 +43,7 @@ return example
 }
 ```
 
-## `PUT /task`
+### `PUT /task`
 **Description** update one existing task
 
 Request body example
@@ -67,6 +67,21 @@ success return
 ```
 
 if requested id is not found, return 404
+```js
+{
+    "detail": "Invalid task id"
+}
+```
+
+## `DELETE /tasks/{id}`
+**description** delete specific task by id
+
+```
+DELETE /task/{id}
+```
+If success will return 204 code (none).
+
+If id not exists then will return 404 code with the following message:
 ```js
 {
     "detail": "Invalid task id"

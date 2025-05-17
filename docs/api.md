@@ -35,11 +35,14 @@ Return example
 
 return example
 ```js
-{
-    "id": 3,
-    "title": "example",
-    "description": "this is an example to testing",
-    "done": false
+{   
+    "detail": "Task created"
+    "task": {
+        "id": 3,
+        "title": "example",
+        "description": "this is an example to testing",
+        "done": false
+    }
 }
 ```
 

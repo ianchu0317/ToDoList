@@ -57,7 +57,7 @@ def get_tasks():
     return tasks
 
 
-def add_task(task: Task):
+def create_task(task: Task):
     task.id = generate_task_id()
     task_data = get_task_data(task)
     
@@ -73,7 +73,8 @@ def add_task(task: Task):
     cursor.close()
     cnx.close()
 
-    return task
+    return {"detail": "Task created", "task": task}
+            
 
 
 def update_task(task: Task) -> Task:   

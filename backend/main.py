@@ -9,9 +9,9 @@ def read_tasks():
     return controllers.get_tasks()
 
 
-@app.post("/task", response_model=Task)
+@app.post("/task", response_model=Task, status_code=201)
 def create_task(task: Task):
-    return controllers.add_task(task)
+    return controllers.create_task(task)
 
 
 @app.put("/task/{task_id}}", status_code=200)

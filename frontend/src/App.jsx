@@ -163,13 +163,13 @@ export default function App() {
               {/* Right: Buttons */}
               <div className="space-x-2 flex items-center">
                 <button
-                  className="text-sm text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
+                  className="text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors cursor-pointer"
                   onClick={() => handleEdit(task)}
                 >
                   Edit
                 </button>
                 <button
-                  className="text-sm text-red-600 hover:text-red-800 transition-colors cursor-pointer"
+                  className="text-sm text-red-600 hover:text-red-800 hover:underline transition-colors cursor-pointer"
                   onClick={() => handleDelete(task.id)}
                 >
                   Delete

@@ -7,7 +7,7 @@ export default function App() {
   const [showForm, setShowForm] = useState(false);
   const [newTask, setNewTask] = useState({ title: "", description: "" });
   const [editingTask, setEditingTask] = useState(null);
-  const apiUrl = "http://localhost:8000";
+  const apiUrl = "api";
 
   useEffect(() => {
     fetchTasks();

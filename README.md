@@ -33,3 +33,16 @@ ToDoList/
 ## Run project in local
 
 1. Clone repository
+```sh
+git clone https://github.com/ianchu0317/ToDoList.git
+```
+
+2. Build web 
+```sh
+cd frontend/web && npm install && npm run build
+```
+
+3. Run docker container `ToDoList/docker-compose.yml`
+```sh
+docker compose up --build
+```

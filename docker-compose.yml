@@ -1,0 +1,41 @@
+services: 
+  web:
+    container_name: todo-web
+    image: ubuntu/apache2:2.4-22.04_beta
+    depends_on:
+      - api
+    ports:
+      - 80:80
+    volumes:
+      - ./frontend/web/dist/:/var/www/html
+
+  api:
+    container_name: todo-api
+    build: ./backend/
+    depends_on:
+      - db
+    ports:
+      - 8000:8000
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: todo
+      DB_PASSWORD: todo_password
+      DB_NAME: todo_list
+
+  db:
+    container_name: todo-db
+    image: mysql:8.0
+    ports:
+      - 3306:3306
+    volumes:
+      - todo-db-data:/var/lib/mysql
+      - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: todo_list
+      MYSQL_USER: todo
+      MYSQL_PASSWORD: todo_password
+
+volumes:
+  todo-db-data:

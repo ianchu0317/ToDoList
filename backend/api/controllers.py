@@ -1,3 +1,4 @@
+import os
 import mysql.connector
 from fastapi import HTTPException
 from schemas import Task
@@ -7,10 +8,11 @@ from schemas import Task
 def get_db_connection():
     """Get connection with database"""
     return mysql.connector.connect(
-        host="127.0.0.1",
-        user="todo",
-        password="todo_password",
-        database="todo_list"
+        host=os.getenv("DB_HOST"),
+        port=os.getenv("DB_PORT", "3306"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")        
     )
 
 

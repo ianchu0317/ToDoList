@@ -6,6 +6,14 @@ npm install
 npm run dev
 ```
 
+## Configurar web para producción
+```bash
+npm install
+npm run build
+```
+El contenido generado se va a encontrar en carpeta `dist`.
+De ahí se puede utilizar para Dockerfile
+
 ## 📌 Resumen
 Componente principal que gestiona tareas (`tasks`) a través de una API. Permite crear, editar, eliminar y marcar como completadas las tareas.
 

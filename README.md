@@ -31,6 +31,17 @@ cd frontend/web && npm install && npm run build
 docker compose up --build
 ```
 
+## Features
+
+- Data persistence with MySQL
+
+- Upload, Edit, Delete, and Search tasks
+
+- Check and Uncheck tasks
+
+- Modern UI with Tailwind CSS
+
+- Responsive design for mobile and desktop
 
 ## Project structure
 ```
@@ -46,4 +57,13 @@ ToDoList/
 │   └── docker-compose.yml   <-- frontend only
 ├── docker-compose.yml       <-- ToDoList app (frontend + backend + db)
 ```
+
+## More detail documentation
+- [`docs/backend.md`](docs/backend.md) for backend API and database
+
+    - [`docs/api.md`](docs/backend/api.md) for API
+
+    - [`docs/db.md`](docs/backend/db.md) for database
+
+- [`docs/frontend/`](docs/frontend/) for frontend web
 

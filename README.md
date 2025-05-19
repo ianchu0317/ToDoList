@@ -2,16 +2,22 @@
 
 
 ## Technologies used
-
-- MySQL
+- Python
 
 - FastAPI
 
+- Uvicorn
+
+- MySQL
+
+- Docker + Docker Compose
+
+- Node.js + NPM
+
 - Vite + React + Tailwind CSS
 
-- Apache2 
+- Apache2
 
-- Docker 
 
 
 ## Run project in local

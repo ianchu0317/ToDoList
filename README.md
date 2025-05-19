@@ -1,5 +1,36 @@
 # ToDoList
 
+## Screenshots
+
+![image-demo-todo-web](https://github.com/user-attachments/assets/75f6d513-8ea2-40ef-a174-c3bac2adf8d9)
+
+[video-demo-todo-web](https://github.com/user-attachments/assets/09f78832-cc22-4520-a81d-a6deeeb891b2)
+
+## Description
+A simple fullstack project for managing personal tasks.
+
+The project applies CRUD operations with a RESTful API built using FastAPI, and a modern frontend using Vite, React, and Tailwind CSS.
+
+It demonstrates how to structure a fullstack app using Docker and MySQL for deployment and data persistence. 
+
+<br>
+
+
+## Features
+
+- Add / edit / delete tasks
+
+- Toggle task completion
+
+- Responsive frontend
+
+- RESTful API using FastAPI
+
+- Persistent data using MySQL
+
+- Dockerized for easy deployment
+
+<br>
 
 ## Technologies used
 - Python
@@ -18,7 +49,7 @@
 
 - Apache2
 
-
+<br>
 
 ## Run project in local
 
@@ -37,17 +68,11 @@ cd frontend/web && npm install && npm run build
 docker compose up --build
 ```
 
-## Features
+<br>
 
-- Data persistence with MySQL
+---
 
-- Upload, Edit, Delete, and Search tasks
-
-- Check and Uncheck tasks
-
-- Modern UI with Tailwind CSS
-
-- Responsive design for mobile and desktop
+<br>
 
 ## Project structure
 ```

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from schemas import Task
-import controllers
+import db_controllers as db_ctrl
 
 app = FastAPI()
 app.add_middleware(
@@ -15,19 +15,19 @@ app.add_middleware(
 
 @app.get("/tasks", response_model=list[Task])
 def read_tasks():
-    return controllers.get_tasks()
+    return db_ctrl.get_tasks()
 
 
 @app.post("/task", status_code=201)
 def create_task(task: Task):
-    return controllers.create_task(task)
+    return db_ctrl.create_task(task)
 
 
 @app.put("/tasks/{task_id}", status_code=200)
 def update_task(task_id: int, task: Task):
-    return controllers.update_task(task_id, task)
+    return db_ctrl.update_task(task_id, task)
 
 
 @app.delete("/tasks/{task_id}", status_code=204)
 def delete_task(task_id: int):
-    return controllers.delete_task(task_id)
+    return db_ctrl.delete_task(task_id)

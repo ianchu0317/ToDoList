@@ -1,6 +1,6 @@
 services: 
   api:
-    container_name: todo-api
+    container_name: todo-api-backend
     build: .
     depends_on:
       - db
@@ -14,7 +14,7 @@ services:
       DB_NAME: todo_list
 
   db:
-    container_name: todo-db
+    container_name: todo-db-backend
     image: mysql:8.0
     ports:
       - 3306:3306

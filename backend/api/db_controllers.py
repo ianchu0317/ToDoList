@@ -1,7 +1,7 @@
 import os
 import mysql.connector
 from fastapi import HTTPException
-from schemas import Task
+from schemas import Task, User
 
 
 # AUXILIARY FUNCTIONS
@@ -39,9 +39,26 @@ def raise_invalid_task():
         status_code=404,
         detail="Invalid task id"
     )
+
+
+# USER ENDPOINTS FUNCTIONS
+def is_user_in_db(user: User):
+    username = user.username
+    cnx = get_db_connection()
+    cursor = cnx.cursor()
     
+    cursor.execute("SELECT COUNT(*) FROM users"
+                   "WHERE username = %(username)s;",
+                   {"username": username})
+    (count, ) = cursor.fetchone()
     
-# ENDPOINTS FUNCTIONS
+    cursor.close()
+    cnx.close()
+    
+    return count > 0
+
+    
+# TASK ENDPOINTS FUNCTIONS
 def get_tasks():
     cnx = get_db_connection()
     cursor = cnx.cursor()

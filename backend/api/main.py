@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from schemas import Task
+from schemas import Task, User
 import db_controllers as db_ctrl
 
 app = FastAPI()
@@ -12,7 +12,13 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+# User management endpoints
+@app.post("/register", status_code=201)
+def create_user(user_credentials: User):
+    return user_credentials
+    
 
+# Task management endpoints
 @app.get("/tasks", response_model=list[Task])
 def read_tasks():
     return db_ctrl.get_tasks()

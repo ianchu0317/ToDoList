@@ -17,7 +17,7 @@ app.add_middleware(
 @app.post("/register", status_code=201)
 def create_user(user_credentials: User):
     auth_ctrl.validate_user(user_credentials)
-    return user_credentials
+    return db_ctrl.create_user(user_credentials)
     
 
 # Task management endpoints

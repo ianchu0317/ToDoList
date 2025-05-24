@@ -1,5 +1,6 @@
 import os
 import mysql.connector
+import auth_controllers as auth_ctrl
 from fastapi import HTTPException
 from schemas import Task, User
 
@@ -56,6 +57,27 @@ def is_user_in_db(user: User):
     cnx.close()
     
     return count > 0
+
+
+def create_user(user: User):
+    user_data = {
+        "username": user.username,
+        "hashed_password": auth_ctrl.hash_password(user.password)
+    }
+    
+    cnx = get_db_connection()
+    cursor = cnx.cursor()
+    
+    cursor.execute(
+        "INSERT INTO users (username, hashed_password) "
+        "VALUES (%(username)s, %(hashed_password)s);", 
+        user_data
+        )
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+
+    return {"detail": "User created", "token": "testing_token"}
 
     
 # TASK ENDPOINTS FUNCTIONS

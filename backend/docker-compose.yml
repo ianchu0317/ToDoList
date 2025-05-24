@@ -6,6 +6,8 @@ services:
       - db
     ports:
       - 8000:8000
+    volumes: 
+      - ./api:/app
     environment:
       DB_HOST: db
       DB_PORT: 3306

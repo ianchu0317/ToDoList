@@ -16,7 +16,6 @@ app.add_middleware(
 # User management endpoints
 @app.post("/register", status_code=201)
 def create_user(user_credentials: User):
-    print(user_credentials)
     auth_ctrl.validate_user(user_credentials)
     return user_credentials
     

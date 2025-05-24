@@ -47,7 +47,7 @@ def is_user_in_db(user: User):
     cnx = get_db_connection()
     cursor = cnx.cursor()
     
-    cursor.execute("SELECT COUNT(*) FROM users"
+    cursor.execute("SELECT COUNT(*) FROM users "
                    "WHERE username = %(username)s;",
                    {"username": username})
     (count, ) = cursor.fetchone()

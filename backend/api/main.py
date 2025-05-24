@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from schemas import Task, User
 import db_controllers as db_ctrl
+import auth_controllers as auth_ctrl
 
 app = FastAPI()
 app.add_middleware(
@@ -15,6 +16,8 @@ app.add_middleware(
 # User management endpoints
 @app.post("/register", status_code=201)
 def create_user(user_credentials: User):
+    print(user_credentials)
+    auth_ctrl.validate_user(user_credentials)
     return user_credentials
     
 

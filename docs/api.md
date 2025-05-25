@@ -1,5 +1,33 @@
 ## API Endpoints
 
+### `POST /register` 
+**Description** register user to use the app.
+The new user to register need to be unique username (not already in db),
+or it will return 401 code with the message "invalid credentials"
+
+
+Request example
+```js
+{
+    username: admin,
+    password: password
+}
+```
+
+Return example (code 201)
+```js
+{
+    detaiil: "user created"
+    access_token: {
+        token: "jwt.token.example"
+        type: "Bearer"
+    }
+}
+```
+
+
+
+
 ### `GET /tasks`
 **Description** return all tasks on server.
 

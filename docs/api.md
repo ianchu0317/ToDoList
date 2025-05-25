@@ -1,4 +1,6 @@
-## API Endpoints
+# API Endpoints
+
+## Authentication endpoints
 
 ### `POST /register` 
 **Description** register user to use the app.
@@ -25,6 +27,35 @@ Return example (code 201)
 }
 ```
 
+## `POST /login`
+**Description** login user to use the app.
+The user need to provide the correct username and password to login.
+If the username or password is incorrect or dont exists, it will return 401 code with the message "invalid credentials"
+
+Request example
+```js
+{
+    username: admin,
+    password: password
+}
+```
+
+Return example (code 200)
+```js
+{
+    detail: "login success"
+    access_token: {
+        token: "jwt.token.example"
+        type: "Bearer"
+    }
+}
+```
+
+
+---
+## Task management endpoints
+
+The following endpoints need to be authenticated with the token received from the register or login endpoint.
 
 
 

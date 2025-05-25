@@ -2,7 +2,7 @@ import os
 import mysql.connector
 import auth_controllers as auth_ctrl
 from fastapi import HTTPException
-from schemas import Task, User
+from schemas import Task, User, AccessToken
 
 
 # AUXILIARY FUNCTIONS
@@ -106,13 +106,13 @@ def create_user(user: User):
 
     return {
         "detail": "User created", 
-        "access_token": {
-            "token": "testing", 
-            "type": "bearer"
-            }
+        "access_token": AccessToken(
+            token=auth_ctrl.create_token(user),
+            token_type="bearer"
+            )
         }
 
-    
+
 # TASK ENDPOINTS FUNCTIONS
 def get_tasks():
     cnx = get_db_connection()

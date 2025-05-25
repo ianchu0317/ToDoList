@@ -3,7 +3,7 @@ import jwt
 from datetime import datetime, timezone, timedelta
 from jwt.exceptions import InvalidTokenError
 from passlib.context import CryptContext
-from schemas import User
+from schemas import User, AccessToken
 from fastapi import HTTPException
 
 # password hashing context
@@ -60,9 +60,10 @@ def login_user(user: User):
         raise_invalid_user()
     if not pwd_context.verify(plain_password, db_hashed_password):
         raise_invalid_user()
-    return {"detail": "Login successful", 
-            "access_token": {
-                "token": create_token(user),
-                "type": "bearer"
-            }
+    return {
+        "detail": "Login successful", 
+        "access_token": AccessToken(
+            token=create_token(user),
+            token_type="bearer"
+            )
         }

@@ -1,10 +1,18 @@
+import db_controllers as db_ctrl    
+import jwt
+from datetime import datetime, timezone, timedelta
+from jwt.exceptions import InvalidTokenError
+from passlib.context import CryptContext
 from schemas import User
 from fastapi import HTTPException
-from passlib.context import CryptContext
-import db_controllers as db_ctrl
 
-
+# password hashing context
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# JWT generation details
+SECRET_KEY = "your mom"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 1
+
 
 # AUXILIARY FUNCTIONS
 def hash_password(password: str) -> str:
@@ -15,6 +23,7 @@ def hash_password(password: str) -> str:
         pass
     return hashed_password
 
+
 def raise_invalid_user():
     """Raise exception if user is invalid"""
     raise HTTPException(
@@ -22,6 +31,19 @@ def raise_invalid_user():
         detail="Invalid username or password"
     )
 
+
+def create_token(user: User):
+    """Create a token for the user"""
+    data = {
+        "sub": user.username,
+        "username": user.username,
+        "exp": datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    } 
+    jwt_token = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
+    return jwt_token
+
+    
+# AUTHENTICATION ENDPOINTS FUNCTIONS
 def validate_user(user: User):
     """Check if user is in database, raise exception if user exists"""
     if db_ctrl.is_user_in_db(user):
@@ -40,7 +62,7 @@ def login_user(user: User):
         raise_invalid_user()
     return {"detail": "Login successful", 
             "access_token": {
-                "token": "testing_token",
+                "token": create_token(user),
                 "type": "bearer"
             }
         }

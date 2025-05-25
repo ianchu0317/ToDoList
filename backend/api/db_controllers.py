@@ -185,13 +185,15 @@ def update_task(task_id: int, task: Task, token: str):
     return {"detail": "Task updated", "task": task}
 
 
-def delete_task(task_id: int):
+def delete_task(task_id: int, token: str):
+    user_id = auth_ctrl.get_user_id_from_token(token)
+    
     cnx = get_db_connection()
     cursor = cnx.cursor()
     
     cmd = ("DELETE FROM tasks "
-           "WHERE id=%(id)s;")
-    cursor.execute(cmd, {"id": task_id})
+           "WHERE id=%(id)s AND user_id=%(user_id)s;")
+    cursor.execute(cmd, {"id": task_id, "user_id": user_id})
     cnx.commit()
     
     if cursor.rowcount == 0:

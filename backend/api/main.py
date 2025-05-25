@@ -51,5 +51,5 @@ def update_task(task_id: int,
 
 
 @app.delete("/tasks/{task_id}", status_code=204)
-def delete_task(task_id: int):
-    return db_ctrl.delete_task(task_id)
+def delete_task(task_id: int, token: Annotated[str, Depends(oauth2_scheme)]):
+    return db_ctrl.delete_task(task_id, token)

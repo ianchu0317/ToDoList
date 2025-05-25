@@ -66,7 +66,15 @@ def get_db_hashed_password(user: User):
     cursor.execute("SELECT * FROM users "
                    "WHERE username = %(username)s;",
                    {"username": user.username})
-    (id, username, hashed_password) = cursor.fetchone()    
+    try: 
+        (id, username, hashed_password) = cursor.fetchone()
+    except TypeError:
+        cursor.close()
+        cnx.close()
+        raise HTTPException(
+            status_code=404,
+            detail="User not found"
+        )    
     cursor.close()
     cnx.close()
     

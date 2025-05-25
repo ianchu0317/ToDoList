@@ -51,6 +51,24 @@ Return example (code 200)
 }
 ```
 
+### JWT Token
+**Description** The token is used to authenticate the user for the task management endpoints.
+The token is a JWT token that is returned after successful registration or login.
+The token should be included in the `Authorization` header of the request to the task management endpoints.
+
+Authorization header example
+```
+Authorization: Bearer jwt.token.example
+``` 
+
+Decoded token payload example
+```js
+{
+    "sub": 1,             // user id in db
+    "username": "admin", // username of the user
+    "exp": 1700000000   // expiration time 
+}
+```
 
 ---
 ## Task management endpoints

@@ -114,11 +114,13 @@ def create_user(user: User):
 
 
 # TASK ENDPOINTS FUNCTIONS
-def get_tasks():
+def get_tasks(token: str):
     cnx = get_db_connection()
     cursor = cnx.cursor()
     
-    cursor.execute("SELECT * FROM tasks")
+    cursor.execute("SELECT * FROM tasks "
+                   "WHERE user_id = %(user_id)s;",
+                   {"user_id": auth_ctrl.get_user_id_from_token(token)})
     tasks = [Task(id=id, 
                   title=title,
                   description=description,

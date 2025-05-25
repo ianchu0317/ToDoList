@@ -1,7 +1,9 @@
 import db_controllers as db_ctrl
 import auth_controllers as auth_ctrl
 from schemas import Task, User
+from typing import Annotated
 from fastapi import FastAPI
+from fastapi import Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer
 
@@ -15,7 +17,7 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-oauth_scheme = OAuth2PasswordBearer(tokenUrl="login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 
 # User management endpoints
@@ -32,8 +34,8 @@ def login(user_credentials: User):
 
 # Task management endpoints
 @app.get("/tasks", response_model=list[Task])
-def read_tasks():
-    return db_ctrl.get_tasks()
+def read_tasks(token: Annotated[str, Depends(oauth2_scheme)]):
+    return db_ctrl.get_tasks(token)
 
 
 @app.post("/task", status_code=201)

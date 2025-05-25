@@ -18,7 +18,12 @@ app.add_middleware(
 def create_user(user_credentials: User):
     auth_ctrl.validate_user(user_credentials)
     return db_ctrl.create_user(user_credentials)
-    
+
+
+@app.post("/login", status_code=200)
+def login(user_credentials: User):
+    return user_credentials
+
 
 # Task management endpoints
 @app.get("/tasks", response_model=list[Task])

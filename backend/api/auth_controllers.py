@@ -43,7 +43,30 @@ def create_token(user: User):
     jwt_token = jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
     return jwt_token
 
-    
+
+def decode_token(token: str):
+    """Decode the JWT token"""
+    try:
+        decoded_token = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return decoded_token
+    except InvalidTokenError:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid token"
+        )
+    except jwt.exceptions.ExpiredSignatureError:
+        raise HTTPException(
+            status_code=401,
+            detail="Token has expired"
+        )
+        
+
+def get_user_id_from_token(token: str):
+    """Get user ID from the token"""
+    decoded_token = decode_token(token)
+    return decoded_token.get("sub")
+
+
 # AUTHENTICATION ENDPOINTS FUNCTIONS
 def validate_user(user: User):
     """Check if user is in database, raise exception if user exists"""

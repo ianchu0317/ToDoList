@@ -11,6 +11,7 @@ class AccessToken(BaseModel):
 
 class Task(BaseModel):
     id: int | None = None
+    user_id: int | None = None
     title: str
     description: str | None = None
     done: bool | None = False

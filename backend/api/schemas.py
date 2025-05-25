@@ -5,6 +5,9 @@ class User(BaseModel):
     username: str
     password: str
 
+class AccessToken(BaseModel):
+    token: str
+    token_type: str = "bearer"
 
 class Task(BaseModel):
     id: int | None = None

@@ -77,7 +77,13 @@ def create_user(user: User):
     cursor.close()
     cnx.close()
 
-    return {"detail": "User created", "token": "testing_token"}
+    return {
+        "detail": "User created", 
+        "access_token": {
+            "token": "testing", 
+            "type": "bearer"
+            }
+        }
 
     
 # TASK ENDPOINTS FUNCTIONS

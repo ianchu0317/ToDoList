@@ -104,18 +104,29 @@ The following endpoints need to be authenticated with the token received from th
 Return example 
 ```js
 [
+[
     {
-        id: 1,
-        title: "test",
-        description: "test",
-        done: "false"
+        "id": 3,
+        "user_id": 1,
+        "title": "example",
+        "description": "this is an example to testing",
+        "done": false
     },
     {
-        id: 2,
-        title: "example",
-        description: "this is an example", 
-        done: "true"
+        "id": 4,
+        "user_id": 1,
+        "title": "example",
+        "description": "this is an example to testing",
+        "done": false
+    },
+    {
+        "id": 5,
+        "user_id": 1,
+        "title": "example",
+        "description": "this is an example to testing",
+        "done": false
     }
+]
 ]
 ```
 
@@ -137,6 +148,7 @@ return example
     "detail": "Task created"
     "task": {
         "id": 3,
+        "user_id": 1,
         "title": "example",
         "description": "this is an example to testing",
         "done": false
@@ -162,6 +174,7 @@ success return
     "detail": "Task updated",
     "task": {
         "id": 3,
+        "user_id": 1,
         "title": "example",
         "description": "example to testing update",
         "done": false

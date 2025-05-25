@@ -27,7 +27,18 @@ Return example (code 201)
 }
 ```
 
-## `POST /login`
+Real example success register
+```js
+{
+    "detail": "User created",
+    "access_token": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjQsInVzZXJuYW1lIjoicGVuZWEiLCJleHAiOjE3NDgxNDI5NDR9.tScXsUvVM4iBVsPBON34DveCVz1maHCxx0ldAA_bp4o",
+        "token_type": "bearer"
+    }
+}
+```
+
+### `POST /login`
 **Description** login user to use the app.
 The user need to provide the correct username and password to login.
 If the username or password is incorrect or dont exists, it will return 401 code with the message "invalid credentials"
@@ -47,6 +58,16 @@ Return example (code 200)
     access_token: {
         token: "jwt.token.example"
         type: "Bearer"
+    }
+}
+```
+Real example success login
+```js
+{
+    "detail": "Login successful",
+    "access_token": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoidGVzdGluZyIsImV4cCI6MTc0ODE0MzIyNX0.D1E07xD_XL3gaIcJaFFXmop7fAUaDJO_pZuDLJoBbF8",
+        "token_type": "bearer"
     }
 }
 ```
@@ -155,7 +176,7 @@ if requested id is not found, return 404
 }
 ```
 
-## `DELETE /tasks/{task_id}`
+### `DELETE /tasks/{task_id}`
 **description** delete specific task by id
 
 ```

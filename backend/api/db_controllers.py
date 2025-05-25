@@ -122,10 +122,11 @@ def get_tasks(token: str):
                    "WHERE user_id = %(user_id)s;",
                    {"user_id": auth_ctrl.get_user_id_from_token(token)})
     tasks = [Task(id=id, 
+                  user_id=user_id,
                   title=title,
                   description=description,
                   done=done) 
-             for (id, title, description, done) in cursor]
+             for (id, user_id, title, description, done) in cursor]
     
     cursor.close()
     cnx.close()

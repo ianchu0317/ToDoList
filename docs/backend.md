@@ -24,3 +24,14 @@ python -m venv .venv
 source .venv/bin/activate
 pip install fastapi
 ```
+
+## Development changes
+
+`Dockerfile`
+Commented line is for production use.
+
+`docker compose`
+```
+...
+uvicorn --reload
+```

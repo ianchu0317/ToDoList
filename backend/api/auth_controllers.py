@@ -9,7 +9,8 @@ from fastapi import HTTPException
 # password hashing context
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # JWT generation details
-SECRET_KEY = "your mom"
+# openssl rand -hex 32
+SECRET_KEY = "367747ca7b7cd6c9f4ac3e5b865078276e48b32497669c4cbc8736fa78668eee"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 1
 

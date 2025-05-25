@@ -91,6 +91,20 @@ Decoded token payload example
 }
 ```
 
+Token expiration return (code status 401) 
+```js
+{
+    "detail": "Token has expired"
+}
+```
+
+Invalid token return (code status 401)
+```js
+{
+    "detail": "Invalid token"
+}
+```
+
 ---
 ## Task management endpoints
 

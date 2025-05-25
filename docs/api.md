@@ -5,7 +5,7 @@
 ### `POST /register` 
 **Description** register user to use the app.
 The new user to register need to be unique username (not already in db),
-or it will return 401 code with the message "invalid credentials"
+or it will return 409 code with the message "invalid credentials"
 
 
 Request example

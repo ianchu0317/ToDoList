@@ -11,6 +11,17 @@ export default function App() {
   const [newTask, setNewTask] = useState({ title: "", description: "" });
   const [editingTask, setEditingTask] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("jwt_token") || "");
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light"); // <--- Nuevo estado para el tema
+
+  // Aplica la clase 'dark' al <html> cuando el tema cambia
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   useEffect(() => {
     if (token) {
@@ -106,17 +117,30 @@ export default function App() {
     setNewTask({ title: task.title, description: task.description });
   };
 
+  const toggleTheme = () => { // <--- Función para cambiar el tema
+    setTheme(prevTheme => (prevTheme === "light" ? "dark" : "light"));
+  };
+
   return (
-    <main className="p-4 max-w-xl mx-auto">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-500"> {/* <--- Fondo y texto base para los temas */}
       {!token ? (
         <AuthForm setToken={setToken} />
       ) : (
-        <>
+        <main className="p-4 max-w-xl mx-auto">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-bold">My Tasks</h1>
-            <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded transition-all duration-200 hover:bg-red-600 hover:scale-105">
-              Logout
-            </button>
+            <div className="flex items-center space-x-2">
+              {/* Botón para cambiar el tema */}
+              <button
+                onClick={toggleTheme}
+                className="px-3 py-1 rounded-full text-sm bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 transition-colors duration-300"
+              >
+                {theme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode"}
+              </button>
+              <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded transition-all duration-200 hover:bg-red-600 hover:scale-105">
+                Logout
+              </button>
+            </div>
           </div>
 
           {error && <div className="bg-red-100 text-red-700 p-2 rounded mb-4">{error}</div>}
@@ -147,10 +171,10 @@ export default function App() {
           <TaskList tasks={tasks} handleToggleDone={handleToggleDone} handleEdit={handleEdit} handleDelete={handleDelete} />
 
           {tasks.length === 0 && !error && !showForm && (
-            <p className="text-gray-600 mt-4 text-center">No tasks yet. Create a new one!</p>
+            <p className="text-gray-600 mt-4 text-center dark:text-gray-400 transition-colors duration-300">No tasks yet. Create a new one!</p>
           )}
-        </>
+        </main>
       )}
-    </main>
+    </div>
   );
 }

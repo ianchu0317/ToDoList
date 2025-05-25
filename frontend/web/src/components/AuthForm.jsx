@@ -20,7 +20,7 @@ export default function AuthForm({ setToken }) {
         localStorage.setItem("jwt_token", jwt);
         setToken(jwt);
       } else {
-        setSuccessMessage('Registro exitoso. ¡Ahora puedes iniciar sesión!');
+        setSuccessMessage('Registration successful. You can log in now!');
         setShowLogin(true);
         setAuthForm({ username: "", password: "" });
       }
@@ -37,7 +37,7 @@ export default function AuthForm({ setToken }) {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="max-w-sm mx-auto border p-8 rounded-lg shadow-md bg-white w-full">
         <h2 className="text-2xl font-bold text-center mb-6">
-          {showLogin ? "Iniciar Sesión" : "Registrarse"}
+          {showLogin ? "Login" : "Register"}
         </h2>
 
         {error && (
@@ -53,21 +53,21 @@ export default function AuthForm({ setToken }) {
 
         <input
           type="text"
-          placeholder="Usuario"
+          placeholder="Username"
           value={authForm.username}
           onChange={e => setAuthForm({ ...authForm, username: e.target.value })}
           className="block w-full mb-4 p-3 border rounded-md focus:ring-blue-500 focus:border-blue-500"
         />
         <input
           type="password"
-          placeholder="Contraseña"
+          placeholder="Password"
           value={authForm.password}
           onChange={e => setAuthForm({ ...authForm, password: e.target.value })}
           className="block w-full mb-6 p-3 border rounded-md focus:ring-blue-500 focus:border-blue-500"
         />
         <div className="flex justify-between items-center">
           <button onClick={handleAuth} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-md transition duration-200">
-            {showLogin ? "Login" : "Registrar"}
+            {showLogin ? "Login" : "Register"}
           </button>
           <button
             onClick={() => {
@@ -78,7 +78,7 @@ export default function AuthForm({ setToken }) {
             }}
             className="text-blue-600 hover:text-blue-800 font-semibold text-sm transition duration-200"
           >
-            {showLogin ? "¿No tienes cuenta? Regístrate" : "¿Ya tienes cuenta? Inicia Sesión"}
+            {showLogin ? "Don't have an account? Register" : "Already have an account? Login"}
           </button>
         </div>
       </div>

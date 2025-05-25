@@ -26,7 +26,7 @@ export default function App() {
       setTasks(res.data);
       setError(null);
     } catch (err) {
-      setError("No se pudieron cargar las tareas. Tu sesión podría haber expirado.");
+      setError("Unable to load tasks. Your session might have expired.");
     }
   };
 
@@ -39,7 +39,7 @@ export default function App() {
 
   const handleCreateTask = async () => {
     if (!newTask.title.trim()) {
-      setError("El título de la tarea no puede estar vacío.");
+      setError("Task title cannot be empty.");
       return;
     }
     try {
@@ -52,13 +52,13 @@ export default function App() {
       setShowForm(false);
       setError(null);
     } catch (err) {
-      setError("No se pudo crear la tarea.");
+      setError("Unable to create task.");
     }
   };
 
   const handleUpdateTask = async () => {
     if (!newTask.title.trim()) {
-      setError("El título de la tarea no puede estar vacío.");
+      setError("Task title cannot be empty.");
       return;
     }
     try {
@@ -72,7 +72,7 @@ export default function App() {
       setNewTask({ title: "", description: "" });
       setError(null);
     } catch (err) {
-      setError("No se pudo actualizar la tarea.");
+      setError("Unable to update task.");
     }
   };
 
@@ -82,7 +82,7 @@ export default function App() {
       setTasks(prev => prev.filter(task => task.id !== id));
       setError(null);
     } catch (err) {
-      setError("No se pudo eliminar la tarea.");
+      setError("Unable to delete task.");
     }
   };
 
@@ -96,7 +96,7 @@ export default function App() {
       setTasks(prev => prev.map(t => (t.id === task.id ? res.data.task : t)));
       setError(null);
     } catch (err) {
-      setError("No se pudo actualizar el estado de la tarea.");
+      setError("Unable to update task status.");
     }
   };
 
@@ -113,9 +113,9 @@ export default function App() {
       ) : (
         <>
           <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold">Mis Tareas</h1>
+            <h1 className="text-2xl font-bold">My Tasks</h1>
             <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded transition-all duration-200 hover:bg-red-600 hover:scale-105">
-              Cerrar Sesión
+              Logout
             </button>
           </div>
 
@@ -129,7 +129,7 @@ export default function App() {
             }}
             className="bg-blue-500 text-white px-4 py-2 rounded mb-4 transition-all duration-200 hover:cursor-pointer hover:bg-blue-600 hover:scale-105"
           >
-            Nueva Tarea
+            New Task
           </button>
 
           {showForm && (
@@ -147,7 +147,7 @@ export default function App() {
           <TaskList tasks={tasks} handleToggleDone={handleToggleDone} handleEdit={handleEdit} handleDelete={handleDelete} />
 
           {tasks.length === 0 && !error && !showForm && (
-            <p className="text-gray-600 mt-4 text-center">No hay tareas aún. ¡Crea una nueva!</p>
+            <p className="text-gray-600 mt-4 text-center">No tasks yet. Create a new one!</p>
           )}
         </>
       )}

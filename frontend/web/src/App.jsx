@@ -10,52 +10,69 @@ export default function App() {
   const [showForm, setShowForm] = useState(false);
   const [newTask, setNewTask] = useState({ title: "", description: "" });
   const [editingTask, setEditingTask] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [token, setToken] = useState(localStorage.getItem("jwt_token") || "");
 
   useEffect(() => {
-    if (token) fetchTasks();
+    if (token) {
+      fetchTasks();
+    } else {
+      setTasks([]);
+    }
   }, [token]);
 
   const fetchTasks = async () => {
     try {
       const res = await axios.get("/tasks");
       setTasks(res.data);
-    } catch {
-      setError("Unable to connect to the API");
+      setError(null);
+    } catch (err) {
+      setError("No se pudieron cargar las tareas. Tu sesión podría haber expirado.");
     }
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("jwt_token");
     setToken("");
     setTasks([]);
+    setError(null);
   };
 
   const handleCreateTask = async () => {
-    if (!newTask.title.trim()) return;
+    if (!newTask.title.trim()) {
+      setError("El título de la tarea no puede estar vacío.");
+      return;
+    }
     try {
       const res = await axios.post("/task", {
         ...newTask,
-        done: "false",
+        done: false,
       });
       setTasks(prev => [...prev, res.data.task]);
       setNewTask({ title: "", description: "" });
       setShowForm(false);
-    } catch {
-      setError("Unable to create task");
+      setError(null);
+    } catch (err) {
+      setError("No se pudo crear la tarea.");
     }
   };
 
   const handleUpdateTask = async () => {
+    if (!newTask.title.trim()) {
+      setError("El título de la tarea no puede estar vacío.");
+      return;
+    }
     try {
       const updatedTask = { ...editingTask, ...newTask };
+      updatedTask.done = updatedTask.done === true || updatedTask.done === "true";
+
       const res = await axios.put(`/tasks/${editingTask.id}`, updatedTask);
       setTasks(prev => prev.map(t => (t.id === editingTask.id ? res.data.task : t)));
       setEditingTask(null);
       setShowForm(false);
       setNewTask({ title: "", description: "" });
-    } catch {
-      setError("Unable to update task");
+      setError(null);
+    } catch (err) {
+      setError("No se pudo actualizar la tarea.");
     }
   };
 
@@ -63,8 +80,9 @@ export default function App() {
     try {
       await axios.delete(`/tasks/${id}`);
       setTasks(prev => prev.filter(task => task.id !== id));
-    } catch {
-      setError("Unable to delete task");
+      setError(null);
+    } catch (err) {
+      setError("No se pudo eliminar la tarea.");
     }
   };
 
@@ -72,12 +90,13 @@ export default function App() {
     try {
       const updatedTask = {
         ...task,
-        done: task.done === "true" || task.done === true ? false : true,
+        done: !(task.done === true || task.done === "true"),
       };
       const res = await axios.put(`/tasks/${task.id}`, updatedTask);
       setTasks(prev => prev.map(t => (t.id === task.id ? res.data.task : t)));
-    } catch {
-      setError("Unable to update task status");
+      setError(null);
+    } catch (err) {
+      setError("No se pudo actualizar el estado de la tarea.");
     }
   };
 
@@ -93,11 +112,13 @@ export default function App() {
         <AuthForm setToken={setToken} />
       ) : (
         <>
-          <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded mb-4">
-            Logout
-          </button>
+          <div className="flex justify-between items-center mb-4">
+            <h1 className="text-2xl font-bold">Mis Tareas</h1>
+            <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded transition-all duration-200 hover:bg-red-600 hover:scale-105">
+              Cerrar Sesión
+            </button>
+          </div>
 
-          <h1 className="text-2xl font-bold mb-4">Tasks</h1>
           {error && <div className="bg-red-100 text-red-700 p-2 rounded mb-4">{error}</div>}
 
           <button
@@ -106,9 +127,9 @@ export default function App() {
               setEditingTask(null);
               setNewTask({ title: "", description: "" });
             }}
-            className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+            className="bg-blue-500 text-white px-4 py-2 rounded mb-4 transition-all duration-200 hover:cursor-pointer hover:bg-blue-600 hover:scale-105"
           >
-            New Task
+            Nueva Tarea
           </button>
 
           {showForm && (
@@ -124,6 +145,10 @@ export default function App() {
           )}
 
           <TaskList tasks={tasks} handleToggleDone={handleToggleDone} handleEdit={handleEdit} handleDelete={handleDelete} />
+
+          {tasks.length === 0 && !error && !showForm && (
+            <p className="text-gray-600 mt-4 text-center">No hay tareas aún. ¡Crea una nueva!</p>
+          )}
         </>
       )}
     </main>

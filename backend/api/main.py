@@ -1,10 +1,12 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from schemas import Task, User
 import db_controllers as db_ctrl
 import auth_controllers as auth_ctrl
+from schemas import Task, User
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import OAuth2PasswordBearer
 
 app = FastAPI()
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -12,6 +14,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+
+oauth_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
 
 # User management endpoints
 @app.post("/register", status_code=201)

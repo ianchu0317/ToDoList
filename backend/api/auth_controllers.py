@@ -35,7 +35,7 @@ def raise_invalid_user():
 def create_token(user: User):
     """Create a token for the user"""
     data = {
-        "sub": user.username,
+        "sub": db_ctrl.get_db_user_id(user),
         "username": user.username,
         "exp": datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     } 

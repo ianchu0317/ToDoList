@@ -72,6 +72,20 @@ def get_db_hashed_password(user: User):
     return hashed_password
 
 
+def get_db_user_id(user: User):
+    cnx = get_db_connection()
+    cursor = cnx.cursor()
+    
+    cursor.execute("SELECT * FROM users "
+                   "WHERE username = %(username)s;",
+                   {"username": user.username})
+    (id, username, hashed_password) = cursor.fetchone()    
+    cursor.close()
+    cnx.close()
+    
+    return id
+
+
 def create_user(user: User):
     user_data = {
         "username": user.username,
@@ -97,9 +111,6 @@ def create_user(user: User):
             "type": "bearer"
             }
         }
-
-
-
 
     
 # TASK ENDPOINTS FUNCTIONS

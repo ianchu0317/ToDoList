@@ -36,7 +36,7 @@ def raise_invalid_user():
 def create_token(user: User):
     """Create a token for the user"""
     data = {
-        "sub": db_ctrl.get_db_user_id(user),
+        "sub": str(db_ctrl.get_db_user_id(user)),
         "username": user.username,
         "exp": datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     } 
@@ -64,7 +64,7 @@ def decode_token(token: str):
 def get_user_id_from_token(token: str):
     """Get user ID from the token"""
     decoded_token = decode_token(token)
-    return decoded_token.get("sub")
+    return int(decoded_token.get("sub"))
 
 
 # AUTHENTICATION ENDPOINTS FUNCTIONS

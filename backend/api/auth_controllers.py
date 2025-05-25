@@ -17,9 +17,29 @@ def hash_password(password: str) -> str:
 
 def validate_user(user: User):
     """Check if user is in database, raise exception if user exists"""
-    print(user)
     if db_ctrl.is_user_in_db(user):
         raise HTTPException(
             status_code=401,
             detail="Invalid username or password"
         )
+
+
+def login_user(user: User):
+    plain_password = user.password
+    db_hashed_password = db_ctrl.get_db_hashed_password(user)
+    if not db_hashed_password:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid username or password"
+        )
+    if not pwd_context.verify(plain_password, db_hashed_password):
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid username or password"
+        )
+    return {"detail": "Login successful", 
+            "access_token": {
+                "token": "testing_token",
+                "type": "bearer"
+            }
+        }

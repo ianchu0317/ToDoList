@@ -22,7 +22,7 @@ def create_user(user_credentials: User):
 
 @app.post("/login", status_code=200)
 def login(user_credentials: User):
-    return user_credentials
+    return auth_ctrl.login_user(user_credentials)   
 
 
 # Task management endpoints

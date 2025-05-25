@@ -154,9 +154,8 @@ def create_task(task: Task, token: str):
     return {"detail": "Task created", "task": task}
 
 
-def update_task(task_id: int, task: Task):   
-    task_data = get_task_data(task)
-    task_data["id"] = task_id
+def update_task(task_id: int, task: Task, token: str):
+    task.user_id = auth_ctrl.get_user_id_from_token(token)   
     task.id = task_id  # for return
     
     cnx = get_db_connection()
@@ -165,9 +164,14 @@ def update_task(task_id: int, task: Task):
     cursor.execute(
         "UPDATE tasks "
         "SET title = %(title)s, description = %(description)s, done = %(done)s "
-        "WHERE id = %(id)s ;", 
-        task_data
-        )        
+        "WHERE user_id = %(user_id)s AND id = %(id)s;", 
+        {
+            "title": task.title,
+            "description": task.description,
+            "done": task.done,
+            "user_id": task.user_id,
+            "id": task_id
+        })        
     cnx.commit()
     
     if cursor.rowcount == 0:

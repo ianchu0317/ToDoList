@@ -44,8 +44,10 @@ def create_task(task: Task, token: Annotated[str, Depends(oauth2_scheme)]):
 
 
 @app.put("/tasks/{task_id}", status_code=200)
-def update_task(task_id: int, task: Task):
-    return db_ctrl.update_task(task_id, task)
+def update_task(task_id: int, 
+                task: Task, 
+                token: Annotated[str, Depends(oauth2_scheme)]):
+    return db_ctrl.update_task(task_id, task, token)
 
 
 @app.delete("/tasks/{task_id}", status_code=204)

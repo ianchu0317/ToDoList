@@ -29,6 +29,7 @@ def get_db_connection():
 
 def get_task_data(task: Task) -> dict:
     return {
+        "user_id": task.user_id,
         "title": task.title,
         "description": task.description,
         "done": task.done   
@@ -133,15 +134,16 @@ def get_tasks(token: str):
     return tasks
 
 
-def create_task(task: Task):
+def create_task(task: Task, token: str):
+    task.user_id = auth_ctrl.get_user_id_from_token(token)
     task_data = get_task_data(task)
     
     cnx = get_db_connection()
     cursor = cnx.cursor()
     
     cursor.execute(
-        "INSERT INTO tasks (title, description, done) "
-        "VALUES (%(title)s, %(description)s, %(done)s);", 
+        "INSERT INTO tasks (user_id, title, description, done) "
+        "VALUES (%(user_id)s, %(title)s, %(description)s, %(done)s);", 
         task_data
         )
     cnx.commit()

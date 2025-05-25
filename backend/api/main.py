@@ -39,8 +39,8 @@ def read_tasks(token: Annotated[str, Depends(oauth2_scheme)]):
 
 
 @app.post("/task", status_code=201)
-def create_task(task: Task):
-    return db_ctrl.create_task(task)
+def create_task(task: Task, token: Annotated[str, Depends(oauth2_scheme)]):
+    return db_ctrl.create_task(task, token)
 
 
 @app.put("/tasks/{task_id}", status_code=200)
